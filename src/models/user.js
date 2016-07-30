@@ -32,7 +32,6 @@ exports.insertUser = function(username, password) {
 
 exports.authenticateUser = function(username, password) {
 
-
     return new Promise(function(resolve, reject) {
         db.one('SELECT * FROM users where username=$1', [username])
             .then(function(data) {
