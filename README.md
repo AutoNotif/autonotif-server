@@ -6,6 +6,9 @@
 2. Create a new database in PostgreSQL.
 3. Clone the repo.
 4. Rename  ```src/config/config.example.json``` to ```src/config/config.json``` and enter your options. [Information about config](#config)
+5. Run ```npm install``` to install dependencies.
+6. Run ```npm run setup``` to add the tables to the database.
+7. Run ```npm start``` to start the server.
 
 ## Config
 
