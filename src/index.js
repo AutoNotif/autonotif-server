@@ -5,6 +5,7 @@ const fs = require('fs');
 const session = require('express-session')
 const crypto = require('crypto');
 const bodyParser = require("body-parser");
+const express = require('express');
 
 const secret = crypto.randomBytes(16).toString('hex');
 
@@ -14,6 +15,8 @@ app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Credentials', 'true');
   next();
 });
+
+app.use(express.static(__dirname + '/public'));
 
 
 var sess = session({
