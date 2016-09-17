@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% title= 'Register'; %>
+  <% include ./partials/head %>
+</head>
+<body>
+  <% include ./partials/header %>
+
+  <div class="container">
+    <h1 class="welcome">Register</h1>
+    <form class="login-form" action="/register" method="post">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" name="username" value="">
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" name="password" value="">
+      </div>
+      <button type="submit" name="submit">Log In</button>
+    </form>
+  </div>
+
+
+</body>
+</html>

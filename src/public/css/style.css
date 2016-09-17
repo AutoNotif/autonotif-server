@@ -1,5 +1,79 @@
 * {
   font-family: "Open Sans", sans-serif !important; }
 
-body header {
-  background: #fafafa; }
+header {
+  background: #4030e8;
+  display: flex;
+  padding: 10px;
+  overflow: hidden; }
+  header h1 a, header h1 a:visited {
+    color: white;
+    font-size: 2em;
+    margin-left: 2em;
+    text-decoration: none; }
+  header ul {
+    margin-left: auto; }
+    header ul li {
+      display: inline-block; }
+      header ul li a, header ul li a:visited {
+        padding: 0px 2em;
+        line-height: 2em;
+        cursor: pointer;
+        position: relative;
+        color: white;
+        text-decoration: none; }
+      header ul li:hover {
+        background: rgba(0, 0, 0, 0.2); }
+      header ul li:last-child {
+        margin-right: 2em; }
+
+.container {
+  max-width: 976px;
+  margin: 0 auto; }
+  .container .welcome {
+    margin: 1em;
+    font-size: 3em;
+    text-align: center;
+    color: #909090; }
+  .container .info {
+    display: flex; }
+    .container .info .item {
+      flex: 1;
+      padding: 2em; }
+      .container .info .item h1 {
+        font-size: 1.5em;
+        margin: 1em; }
+  .container form {
+    display: block;
+    max-width: 500px;
+    padding: 1em;
+    margin: 0em auto; }
+    .container form .form-group {
+      margin: 1em;
+      font-size: 1.2em; }
+      .container form .form-group label {
+        color: #666;
+        display: block; }
+      .container form .form-group input {
+        width: 100%;
+        font-size: inherit;
+        border: 1px solid #e0e0e0;
+        margin-top: 0.5em;
+        padding: 0.1em; }
+    .container form button {
+      width: calc(100% - 2em);
+      background: #4030e8;
+      border: none;
+      margin: 1em;
+      font-size: 1.2em;
+      color: #FFF;
+      padding: 1em 0;
+      cursor: pointer; }
+
+@media (max-width: 600px) {
+  .container .info {
+    display: block;
+    padding: 1em; }
+    .container .info .item {
+      width: 100%;
+      padding: 0; } }

@@ -16,6 +16,8 @@ app.use(function(req, res, next) {
   next();
 });
 
+app.set('view engine', 'ejs')
+
 app.use(express.static(__dirname + '/public'));
 
 

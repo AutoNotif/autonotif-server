@@ -3,15 +3,15 @@ const path = require('path');
 const user = require('../models/user');
 
 app.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname, '..', 'views', 'index.html'));
+  res.render(path.join(__dirname, '..', 'views', 'index.ejs'));
 });
 
 app.get('/login', function (req, res) {
-  res.sendFile(path.join(__dirname, '..', 'views', 'login.html'));
+  res.render(path.join(__dirname, '..', 'views', 'login.ejs'));
 });
 
 app.get('/register', function (req, res) {
-  res.sendFile(path.join(__dirname, '..', 'views', 'register.html'));
+  res.render(path.join(__dirname, '..', 'views', 'register.ejs'));
 });
 
 app.get('/tokens', function (req, res) {
@@ -19,7 +19,7 @@ app.get('/tokens', function (req, res) {
     if(!sess.user_id) {
         res.redirect('/login');
     } else {
-        res.sendFile(path.join(__dirname, '..', 'views', 'tokens.html'));
+        res.render(path.join(__dirname, '..', 'views', 'tokens.ejs'));
     }
 
 
