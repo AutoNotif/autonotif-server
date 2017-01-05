@@ -1,52 +1,68 @@
-const db = require('./db')
-const pw = require('../libs/password');
+const bcrypt = require('bcrypt-nodejs');
+const crypto = require('crypto');
+const mongoose = require('mongoose');
+const uuid = require('node-uuid');
 
+const userSchema = new mongoose.Schema({
+  email: { type: String, unique: true },
+  password: String,
+  passwordResetToken: String,
+  passwordResetExpires: Date,
 
-exports.createTable = function() {
-    return db.none('CREATE TABLE IF NOT EXISTS users(id SERIAL PRIMARY KEY, username VARCHAR(40) UNIQUE not null, password VARCHAR(60) not null)');
+  secrets: [{
+    title: String,
+    secret: { type: String, unique: true },
+  }],
+
+  pushes: [{
+    title: String,
+    content: String,
+    secret: String,
+  }],
+
+  devices: [{
+    registration_id: { type: String, unique: true }
+  }]
+
+}, { timestamps: true });
+
+/**
+ * Password hash middleware.
+ */
+userSchema.pre('save', function save(next) {
+  const user = this;
+  if (!user.isModified('password')) { return next(); }
+  bcrypt.genSalt(10, (err, salt) => {
+    if (err) { return next(err); }
+    bcrypt.hash(user.password, salt, null, (err, hash) => {
+      if (err) { return next(err); }
+      user.password = hash;
+      next();
+    });
+  });
+});
+
+/**
+ * Helper method for validating user's password.
+ */
+userSchema.methods.comparePassword = function comparePassword(candidatePassword, cb) {
+  bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
+    cb(err, isMatch);
+  });
+};
+
+/**
+ * Helper method for creating new secret.
+ */
+userSchema.methods.createSecret = function createSecret(name, cb) {
+  const secret = {
+    name,
+    secret: uuid.v4(),
+  }
+  this.secrets.push(secret);
+  cb();
 }
 
-exports.getUserById = function(id) {
-    return db.one('SELECT * FROM users where id=$1', [id]);
-}
+const User = mongoose.model('User', userSchema);
 
-exports.getUserByUsername = function(username) {
-    return db.one('SELECT * FROM users where username=$1', [username]);
-}
-
-exports.insertUser = function(username, password) {
-    return new Promise(function(resolve,reject) {
-        pw.cryptPassword(password)
-            .then(function(hash) {
-                resolve(db.none('INSERT INTO users(username, password) VALUES($1, $2)', [username, hash]));
-            })
-            .catch(function(err) {
-                if(err.code === '23505') {
-                    reject({error: 'Username already exists'})
-                }
-                reject(err);
-            })
-    })
-
-}
-
-exports.authenticateUser = function(username, password) {
-
-    return new Promise(function(resolve, reject) {
-        db.one('SELECT * FROM users where username=$1', [username])
-            .then(function(data) {
-
-                return pw.comparePassword(password, data.password)
-                .then(function(passCorrect) {
-                    resolve({auth:passCorrect, id:data.id});
-                })
-            })
-            .catch(function(err) {
-                if(err.name === 'QueryResultError') {
-                    resolve(false);
-                }
-                reject(err);
-            })
-    })
-
-}
+module.exports = User;
